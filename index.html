@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Vue.js - Exploration introduction</title>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/scrollreveal/dist/scrollreveal.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Questrial" rel="stylesheet">
+    <style>
+      #main {
+        text-align: center;
+        font-family: 'Questrial', sans-serif;
+        color: white;
+        left: 30%;
+        position: absolute;
+      }
+
+      .applet {
+        width: 500px;
+        height: 300px;
+        background-color: red;
+      }
+
+      #bandsList {
+        width: 500px;
+        height: 500px;
+        background-color: blue;
+      }
+
+      #nice {
+        background-color: white;
+        height: 25px;
+        border: black;
+        padding: 2px;
+        color: black;
+      }
+
+      #picOfJerry{
+        height: 400px;
+        width: 400px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="main">
+      <div id="app-1" class="applet one">
+        <h1>{{message}}</h1>
+        <button v-on:click="changeMessage">Click Me!</button>
+      </div>
+      <script>
+      var app1 = new Vue({
+        el: '#app-1',
+        data: {
+          message: 'Vue works by allowing us to declaritively render data to the Dom'
+        },
+        methods: {
+          changeMessage: function() {
+            this.message = "These declarative renderings can be easily modified using tied-together attributes and functions, allowing for cool code packaging.";
+          }
+        }
+      })
+      </script>
+      <div id="app-2" class="applet two">
+        <h1 v-on:click="changeMoreThings">{{message}}</h1>
+      </div>
+      <script>
+      var app2 = new Vue({
+        el: '#app-2',
+        data: {
+          message: 'Click on these words yo',
+          bgcolor: 'orange'
+        },
+        methods: {
+          changeMoreThings: function(){
+            this.message = 'Vue essentially allows us to clearly tie together our view and our controls, associating DOM objects with the relevant functions we want to associate with them';
+            $("#app-2").css("background-color", this.bgcolor);
+          }
+        }
+      })
+      </script>
+      <div id="bandsList" class="three">
+        <h1>Vue also lets us create custom "components" which let us build out re-usable code modules with full interactibility</h1>
+        <h3>For instance, this list of bands</h3>
+        <ul>
+          <bandname
+            v-for="group in bands"
+            v-bind:band="group">
+          </bandname>
+        </ul>
+        <h3>Was created using pre-passed data to our "Bands-List" Object</h3>
+        <p>Try entering in new band:</p>
+        <div contenteditable="true" id="nice"> Type a band here man...</div>
+        <button v-on:click="checkThisOut">Then click Me!</button>
+      </div>
+
+      <script>
+      Vue.component('bandname', {
+        props: ['band'],
+        template: '<li>{{band.text}}</li>'
+      })
+
+
+        var app3 = new Vue({
+          el: '#bandsList',
+          data: {
+            bands: [
+              {text: "Nails"},
+              {text: "Jay Reatard"},
+              {text: "Oneohtrix Point Never"},
+              {text: "The Stooges"},
+              {text: "Heat Dust"},
+              {text: "Parliament"}
+            ]
+          },
+          methods: {
+            checkThisOut: function(){
+              k = $("#nice").text();
+              console.log(k);
+              app3.bands.push({text: k})
+            }
+          }
+        })
+      </script>
+      <div class="applet four">
+        <p>In combination with jQuery, you can write front-end code that is responsive, and tightly contained, allowing for clean code organization</p>
+        <p>Clean code organization lets you write stupid Jerry Seinfeld experiences more quickly.</p>
+        <h2>See below</h2>
+      </div>
+      <div id="jerrySize">
+        <img src="images/jerry.jpeg" id="picOfJerry" class="five" alt="Jerry Seinfeld"></img>
+        <button v-on:click="moreJerry">More Jerry</button>
+        <button v-on:click="lessJerry">Less Jerry</button>
+      </div>
+      <script>
+        var jerry = new Vue({
+          el: "#jerrySize",
+          methods: {
+            moreJerry: function(){
+              $("#picOfJerry").css("height", "600px");
+            },
+            lessJerry: function(){
+              $("#picOfJerry").css("height", "200px");
+            }
+          }
+        })
+      </script>
+      <script>
+        window.sr = ScrollReveal();
+        sr.reveal('.one');
+        sr.reveal('.two');
+        sr.reveal('.three');
+        sr.reveal('.four');
+        sr.reveal('.five');
+
+      </script>
+
+    </div>
+  </body>
+</html>
